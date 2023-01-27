@@ -1,0 +1,90 @@
+Hamid Omranabasi
+Nom de projet : maisonneuve2295313
+
+
+===========================================================================================================
+                                       Les lignes de commande pour:
+===========================================================================================================
+Étape 1 : Création un nouveau projet Laravel
+        composer create-project --prefer-dist laravel/laravel maisonneuve2295313 "8.*"
+        (changement le fichiere .env)
+===========================================================================================================
+Étape 2 :Création les modèles «Ville» et «Etudient»
+        php artisan make:model Ville
+
+        et on ajout ce code dans modele Ville
+            protected $fillable = [
+        'nom'
+    ];
+        ---------------------------------------------------
+        php artisan make:model Etudient 
+
+        en ajoutant les codes suivent dans model
+        protected $fillable = [
+        'nom',
+        'adresse',
+        'phone',
+        'email',
+        'date_de_naissance',
+        'villeId'
+    ];
+===========================================================================================================
+Étape 3 : 
+        php artisan make:migration create_villes_table
+        $table->string('nom',20);
+        -----------------------------------------------------------
+        php artisan make:migration create_etudients_table
+        Schema::create('etudients', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom',100);
+            $table->string('adresse',100);
+            $table->string('phone',20);
+            $table->string('email',50);
+            $table->string('date_de_naissance',8);
+            $table->integer('villeId')->unsigned();
+            $table->foreign('villeId')->references('id')->on('villes');
+            $table->timestamps();
+        });
+        php artisan serve
+
+        php artisan migrate
+                Ajouter dans le fichier App\Providers\AppServiceProvider.php
+                use Illuminate\Support\Facades\Schema;
+                Schema::defaultStringLength(191);
+===========================================================================================================
+Étape 4:
+        php artisan make:factory VilleFactory
+                VilleFactory.php
+                        use App\Models\Ville;
+                        use App\Models\Etudient;
+                        'nom' => $this->faker->sentence
+
+        php artisan make:factory EtudientFactory
+        use App\Models\Ville;
+        use App\Models\Etudient;
+            public function definition()
+    {
+        return [
+            'nom' => $this->faker->name(),
+            'adresse' => $this->faker->address(),
+            'phone' => $this->faker->phoneNumber(),
+            'email'  => $this->faker->unique()->safeEmail(),
+            'date_de_naissance' => $this->faker->dateTimeBetween('-60 year', '-18 year'),
+            'villeId' => $this->faker->unique()->numberBetween(1, 100)
+        ];
+    }
+===========================================================================================================
+
+Étape 5:        php artisan tinker
+                \App\Models\Ville::factory()->times(15)->create()
+                \App\Models\Etudient::factory()->times(100)->create()
+===========================================================================================================        
+Étape 6: 
+        php artisan make:controller VilleController -m Ville
+        php artisan make:controller EtudientController -m Etudient
+===========================================================================================================
+Étape 7: 
+        On mit les deux dossier de bootstrap dans «public»
+        On crée les dossiers «layouts» et «blog» dans resources\view
+        on crée le fichier «app.blade.php» dans le dossier layout en mettant HTML de base
+        on extende layouts dans la page accueil (welcome.blade.php)
