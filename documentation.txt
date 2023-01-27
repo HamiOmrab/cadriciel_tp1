@@ -1,6 +1,9 @@
 Hamid Omranabasi
 Nom de projet : maisonneuve2295313
 
+Lien de webdev: https://e2295313.webdev.cmaisonneuve.qc.ca/tp1/
+Lien de git   : https://github.com/HamiOmrab/cadriciel_tp1
+
 
 ===========================================================================================================
                                        Les lignes de commande pour:
